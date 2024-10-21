@@ -1,10 +1,15 @@
-import { createServer } from 'node:http'
+import Express from "express";
 
+const app = Express()
+app.use(Express.json())
 
-const servidor = createServer((req, res) => {
-    res.write('ta funcionando')
-
-    return res.end()
+app.post('/registro', (req, res) => {
+    const {nome, sobrenome, email, senha, dataNascimento} = req.body
+    if (!nome || !sobrenome || !email || !senha || !dataNascimento){
+        res.send('voce deve completar todos os campos')
+        return
+    }
+    res.send('Usuário criado!')
 })
 
-servidor.listen(8000)
+app.listen(8000)
