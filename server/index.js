@@ -1,9 +1,11 @@
 import Express from "express";
 import { criarTabelas, User } from "./db.js";
 import bcryptjs from "bcryptjs"
+import jsonwebtoken from "jsonwebtoken"
 
 const app = Express()
 app.use(Express.json())
+app.use(cors())
 //criarTabelas()
 
 app.post('/registro', async (req, res) => {
@@ -43,7 +45,22 @@ app.post('/login', async (req, res) => {
         return
     }
 
-    res.send('Login efetuado com sucesso!')
+    const token = jsonwebtoken.sign(
+        {
+             "nome_completo": `${userExiste.nome} ${userExiste.sobrenome}`,
+            "email": userExiste.email,
+            "status": userExiste.status,
+        },
+        'chavecriptografiajwt',
+        {expiresIn: 1000*60*5}
+)
+console.log(token)
+
+
+    res.send({
+        msg: "Login efetuado com sucesso!",
+        tokenJWT: token
+    })
 })
 
 app.listen(8000)
