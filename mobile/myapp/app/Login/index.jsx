@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Link } from 'expo-router';
 
-
-const RegisterScreen = ({ navigation }) => {
-  const [nome, setNome] = useState('');
-  const [sobrenome, setSobrenome] = useState('');
+const LoginScreen = () => {
   const [email, setEmail] = useState('');
-  const [data, setData] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <View style={styles.container}>
@@ -18,22 +15,10 @@ const RegisterScreen = ({ navigation }) => {
         colors={['purple', '#000000']}
         style={styles.background}
       />
-      <Text style={styles.title}>CADASTRO</Text>
+
+      <Text style={styles.title}>BEM-VINDO</Text>
+
       <View style={styles.section}>
-      <TextInput
-        style={styles.input}
-        placeholder="Nome"
-        value={nome}
-        onChangeText={setNome}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Sobrenome"
-        value={sobrenome}
-        onChangeText={setSobrenome}
-      />
-
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -41,32 +26,27 @@ const RegisterScreen = ({ navigation }) => {
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Data de Nascimento (DD/MM/AAAA)"
-        value={data}
-        onChangeText={setData}
-        keyboardType="numeric"
+        placeholderTextColor="#888"
       />
 
       <TextInput
         style={styles.input}
         placeholder="Senha"
-        value={senha}
-        onChangeText={setSenha}
+        value={password}
+        onChangeText={setPassword}
         secureTextEntry
+        placeholderTextColor="#888"
       />
 
       <View style={styles.buttonContainer}>
-        <Button title="Registrar" color="#236bcb" />
+        <Button title="Login" color="#236bcb" />
       </View>
+
+      <Link style={styles.buttonLink} href='/Registro'>CADASTRAR-SE</Link>
       </View>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -74,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: '#f0f0f0',
+    position: 'relative',
   },
   background: {
     position: 'absolute',
@@ -83,20 +63,20 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    color: '#fff',
-    textAlign: 'center',
-  },
   section:{
     backgroundColor: 'black',
     borderRadius: 10,
     width: 350,
-    height: 430,
+    height: 280,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    color: '#fff', 
+    textAlign: 'center',
   },
   input: {
     width: '90%',
@@ -117,7 +97,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
   },
+  buttonLink: {
+    marginTop: 20,
+    backgroundColor: '#4CAF50',
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '600',
+    textAlign: 'center',
+    width: '90%',
+  },
 });
 
-
-export default RegisterScreen;
+export default LoginScreen;

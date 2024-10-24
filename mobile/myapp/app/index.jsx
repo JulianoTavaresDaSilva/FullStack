@@ -1,97 +1,64 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 
-
-const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-
-  const verificacaoLogin = () => {
-    if (email === '' || password === '') {
-      Alert.alert('ERRO', 'Todos os campos devem estar preenchidos.');
-    } else {
-      Alert.alert('Login', `Bem-vindo, ${email}!`);
-    }
-  };
-
-
+export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>BEM-VINDO</Text>
-     
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-     
-      <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-     
-      <View style={styles.buttonContainer}>
-        <Button title="Login" onPress={verificacaoLogin} color="#236bcb" />
-      </View>
-
-
-      <Link style={styles.buttonLink} href='/Registro'>Cadastre-se</Link>
+        <LinearGradient
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0 }}
+            colors={['purple', '#000000',]}
+            style={styles.background}
+        />
+        <Image
+            style={styles.logo}
+            source={require('./Assets/musica.png')}
+        />
+        <Text style={styles.name}>SPOTYFAKE </Text>
+        <Link style={styles.button} href='/Login'>CURTIR A VIBE!</Link>
     </View>
   );
-};
-
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    backgroundColor: 'orange',
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    color: '#333',
-    textAlign: 'center',
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
-  input: {
-    width: '100%',
-    height: 50,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 15,
-    borderRadius: 8,
-    backgroundColor: '#fff',
-    fontSize: 16,
+  logo: {
+    width: 450,
+    height: 300,
+    marginBottom: '2%',
   },
-  buttonContainer: {
-    width: '100%',
-    marginVertical: 10,
-    borderRadius: 8,
+  name: {
+    fontSize: 55,
+    fontWeight: '1000',
+    marginBottom: '3%',
   },
-  buttonLink: {
+  button: {
     marginTop: 20,
-    backgroundColor: '#4CAF50',
+    backgroundColor: 'purple',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
-    width: '100%',
+    width: '50%',
+  },
+  text: {
+    backgroundColor: 'transparent',
+    fontSize: 15,
+    color: '#fff',
   },
 });
-
-
-export default LoginScreen;
