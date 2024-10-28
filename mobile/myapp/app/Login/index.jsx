@@ -1,11 +1,34 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+
+const entrarUsuário = async function (){
+  if (!email || !senha) {
+    console.log('Todos os campos devem ser preenchidos')
+    return
+}
+const resposta = await fetch('http://localhost:8000/login',{
+  method: 'POST',
+  headers: {
+  Accept: 'application/json',
+  'Content-type': 'application/json',
+},
+  body: JSON.stringify({email: email, senha: senha})
+})
+
+if (!resposta) {
+console.log('erro')
+} else if (resposta.status == 200) {
+console.log('Usuário logado com sucesso')
+} else {
+console.log('ocorreu um erro')
+}
+}
 
   return (
     <View style={styles.container}>
@@ -39,7 +62,7 @@ const LoginScreen = () => {
       />
 
       <View style={styles.buttonContainer}>
-        <Button title="Login" color="#236bcb" />
+        <Button title="Login" color="#236bcb" onPress={entrarUsuário}/>
       </View>
 
       <Link style={styles.buttonLink} href='/Registro'>CADASTRAR-SE</Link>

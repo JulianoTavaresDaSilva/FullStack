@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 
@@ -12,7 +12,7 @@ const RegisterScreen = () => {
 
 const registrarUsuario = async function () {
   if (!nome || !email || !senha) {
-      console.log('os parametros nome, email e senha devem ser fornecidos')
+      console.log('Todos os campos devem ser preenchidos')
       return
   }
   const resposta = await fetch('http://localhost:8000/registro',{
@@ -27,7 +27,7 @@ const registrarUsuario = async function () {
 if (!resposta) {
     console.log('erro')
 } else if (resposta.status == 200) {
-    console.log('user criado com sucesso')
+    console.log('Usuário criado com sucesso')
 } else {
     console.log('ocorreu um erro')
 }

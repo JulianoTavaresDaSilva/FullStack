@@ -32,6 +32,7 @@ app.post('/registro', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const {email, senha} = req.body
+    console.log(req.body)
     if (!email || !senha){
         res.send('Preencha todos os campos.')
         return
