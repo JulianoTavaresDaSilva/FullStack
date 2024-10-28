@@ -2,6 +2,7 @@ import Express from "express";
 import { criarTabelas, User } from "./db.js";
 import bcryptjs from "bcryptjs"
 import jsonwebtoken from "jsonwebtoken"
+import cors from "cors"
 
 const app = Express()
 app.use(Express.json())
@@ -10,6 +11,7 @@ app.use(cors())
 
 app.post('/registro', async (req, res) => {
     const {nome, sobrenome, email, senha, dataNascimento} = req.body
+    console.log(req.body)
     if (!nome || !sobrenome || !email || !senha || !dataNascimento){
         res.send('Você deve completar todos os campos.')
         return

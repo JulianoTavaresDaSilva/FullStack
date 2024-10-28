@@ -5,7 +5,7 @@ import { Link } from 'expo-router';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [senha, setSenha] = useState('');
 
   return (
     <View style={styles.container}>
@@ -32,8 +32,8 @@ const LoginScreen = () => {
       <TextInput
         style={styles.input}
         placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
+        value={senha}
+        onChangeText={setSenha}
         secureTextEntry
         placeholderTextColor="#888"
       />

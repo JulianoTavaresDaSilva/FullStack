@@ -3,12 +3,35 @@ import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 
-const RegisterScreen = ({ navigation }) => {
-  const [nome, setNome] = useState('');
-  const [sobrenome, setSobrenome] = useState('');
-  const [email, setEmail] = useState('');
-  const [data, setData] = useState('');
-  const [senha, setSenha] = useState('');
+const RegisterScreen = () => {
+  const [email, setEmail] = useState('')
+  const [nome, setNome] = useState('')
+  const [senha, setSenha] = useState('')
+  const [sobrenome, setSobrenome] = useState('')
+  const [dataNascimento, setDataNascimento] = useState('')
+
+const registrarUsuario = async function () {
+  if (!nome || !email || !senha) {
+      console.log('os parametros nome, email e senha devem ser fornecidos')
+      return
+  }
+  const resposta = await fetch('http://localhost:8000/registro',{
+      method: 'POST',
+      headers: {
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+  },
+      body: JSON.stringify({ name: nome, email: email, senha: senha, sobrenome: sobrenome, dataNascimento: dataNascimento })
+  })
+    
+if (!resposta) {
+    console.log('erro')
+} else if (resposta.status == 200) {
+    console.log('user criado com sucesso')
+} else {
+    console.log('ocorreu um erro')
+}
+}
 
   return (
     <View style={styles.container}>
@@ -46,8 +69,8 @@ const RegisterScreen = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="Data de Nascimento (DD/MM/AAAA)"
-        value={data}
-        onChangeText={setData}
+        value={dataNascimento}
+        onChangeText={setDataNascimento}
         keyboardType="numeric"
       />
 
@@ -60,7 +83,7 @@ const RegisterScreen = ({ navigation }) => {
       />
 
       <View style={styles.buttonContainer}>
-        <Button title="Registrar" color="#236bcb" />
+        <Button title="Registrar" color="#236bcb" onPress={registrarUsuario} />
       </View>
       </View>
     </View>
