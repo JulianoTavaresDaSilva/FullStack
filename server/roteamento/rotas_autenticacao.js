@@ -1,5 +1,5 @@
 import express  from "express";
-import { registro, login } from "../controlador/controladorautenticacao.js"
+import { registro, login } from "../controlador/controlador_autenticacao.js"
 
 const rotas = express.Router()
 
