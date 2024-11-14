@@ -35,12 +35,6 @@ if (!resposta) {
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        start={{ x: 0, y: 1 }}
-        end={{ x: 0, y: 0 }}
-        colors={['purple', '#000000']}
-        style={styles.background}
-      />
       <Text style={styles.title}>CADASTRO</Text>
       <View style={styles.section}>
       <TextInput

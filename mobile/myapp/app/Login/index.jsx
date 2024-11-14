@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 
 const LoginScreen = () => {
@@ -32,13 +31,6 @@ console.log('ocorreu um erro')
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        start={{ x: 0, y: 1 }}
-        end={{ x: 0, y: 0 }}
-        colors={['purple', '#000000']}
-        style={styles.background}
-      />
-
       <Text style={styles.title}>BEM-VINDO</Text>
 
       <View style={styles.section}>

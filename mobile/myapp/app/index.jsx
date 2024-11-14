@@ -1,16 +1,9 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 
 export default function App() {
   return (
     <View style={styles.container}>
-        <LinearGradient
-            start={{ x: 0, y: 1 }}
-            end={{ x: 0, y: 0 }}
-            colors={['purple', '#000000',]}
-            style={styles.background}
-        />
         <Image
             style={styles.logo}
             source={require('./Assets/musica.png')}
@@ -42,12 +35,13 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 55,
+    color: 'white',
     fontWeight: '1000',
     marginBottom: '3%',
   },
   button: {
     marginTop: 20,
-    backgroundColor: 'purple',
+    backgroundColor: 'black',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
