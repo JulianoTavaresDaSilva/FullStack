@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
+import axios from 'axios';
+import { router } from 'expo-router';
+import { AppContext } from '../../scripts/AppContext';
+import { jwtDecode } from 'jwt-decode'
+
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const { setToken, setUser } = useContext(AppContext);
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
-const entrarUsuário = async function (){
-  if (!email || !senha) {
-    console.log('Todos os campos devem ser preenchidos')
-    return
-}
-const resposta = await fetch('http://localhost:8000/login',{
-  method: 'POST',
-  headers: {
-  Accept: 'application/json',
-  'Content-type': 'application/json',
-},
-  body: JSON.stringify({email: email, senha: senha})
-})
+  const EntrarUsuário = async () => {
+    if (!email || !senha) return;
 
-if (!resposta) {
-console.log('erro')
-} else if (resposta.status == 200) {
-console.log('Usuário logado com sucesso')
-} else {
-console.log('ocorreu um erro')
-}
-}
+    try {
+      const res = await axios.post(
+        'http://localhost:8000/login',
+        { "email": email, "senha": senha }
+      );
+      setToken(res.data.token);
+      const user = jwtDecode(res.data.token);
+      setUser(user);
+      router.push("./Home");
+    }
+    catch (e) {
+      Alert.alert("Um erro ocorreu, tente novamente!");
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -54,7 +55,7 @@ console.log('ocorreu um erro')
       />
 
       <View style={styles.buttonContainer}>
-        <Button title="Login" color="#236bcb" onPress={entrarUsuário}/>
+        <Button title="Login" color="#236bcb" onPress={EntrarUsuário}/>
       </View>
 
       <Link style={styles.buttonLink} href='/Registro'>CADASTRAR-SE</Link>

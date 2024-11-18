@@ -6,7 +6,7 @@ export default function App() {
     <View style={styles.container}>
         <Image
             style={styles.logo}
-            source={require('./Assets/musica.png')}
+            source={require('../assets/musica.png')}
         />
         <Text style={styles.name}>SPOTYFAKE </Text>
         <Link style={styles.button} href='/Login'>CURTIR A VIBE!</Link>

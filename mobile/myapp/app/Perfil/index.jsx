@@ -1,103 +1,163 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import React, { useState } from "react";
+import { View, StyleSheet, Text, Image, TouchableOpacity, Alert, TextInput } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+//link seta a home
 
-const pickImage = async () => {
-  let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.All,
-    allowsEditing: true,
-    aspect: [4, 3],
-    quality: 1,
-  });
+export default function UserProfile() {
+  const [profile, setProfile] = useState({});
+  const [editingMode, setEditingMode] = useState(false);
+  const [senha, setSenha] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
 
-  console.log(result);
+  const updateProfile = async () => {
+    if (senha && senha !== confirmPass) {
+      Alert.alert("As senhas não correspondem.");
+      return;
+    }
+    
+    try {
+      const formData = new FormData();
 
-  if (!result.canceled) {
-    setImage(result.assets[0].uri);
-  }
-};
+      if (profile.profileImage) {
+        formData.append("profileImage", {
+          uri: profile.profileImage,
+          type: "image/jpeg",
+          name: "profilePhoto.jpg",
+        });
+      }
 
-const handletSendImage = async () => {
-  try {
-    const data = {
-      file: image,
-      upload_preset: 'ml_default',
-      name: 'teste',
-    };
-    const res = await fetch('http://api.cloudinary.com/v1_1/dywd7cidx/upload', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
-    const result = await res.json();
-    console.log(result);
-  } catch (e) {
-    console.log(e);
-  }
-};
+      formData.append("name", profile.name);
+      formData.append("username", profile.username);
+      formData.append("description", profile.description);
 
-const PerfilScreen = ({ navigation }) => {  
-  
-  const returnHome = () => {  
-    navigation.navigate('Home');  
+      if (senha) {
+        formData.append("senha", senha);
+      }
+
+      Alert.alert("Perfil atualizado com sucesso!");
+      setEditingMode(false);
+      setSenha("");
+      setConfirmPass("");
+    } catch (error) {
+      console.error("Erro ao atualizar o perfil:", error);
+      Alert.alert("Erro ao atualizar o perfil.");
+    }
   };
 
-  const editProfile = () => {
-    
+  const selectImage = async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      Alert.alert("A permissão para acessar a galeria é necessária.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setProfile({ ...profile, profileImage: result.uri });
+    }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        <View style={styles.sectionButton}>
-          <TouchableOpacity onPress={returnHome} style={styles.button}>
+    <View style={styles.container}>
+      <View style={styles.sectionButton}>
+          <TouchableOpacity style={styles.iconButton}> 
             <Image
-              source={require('../Assets/seta.png')}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-          
-          <TouchableOpacity onPress={editProfile} style={styles.button}>
-            <Image
-              source={require('../Assets/lapis.png')}
+              source={require('../../assets/seta.png')}
               style={styles.icon}
             />
           </TouchableOpacity>
         </View>
-        
-        <Image
-          style={styles.foto}
-          source={require('../Assets/gon.jpg')}
-        />
-        <Text style={styles.title}>USER NAME</Text>
-        <View style={styles.sectionPlaylist}>
-          <Text style={styles.title}>PLAYLISTS</Text>
-        </View>
-        
+      <View style={styles.ImageContainer}>
+        <TouchableOpacity onPress={selectImage}>
+          <Image
+            source={
+              profile.profileImage
+                ? { uri: profile.profileImage }
+                : require("../../assets/gon.jpg")
+            }
+            style={styles.profileImage}
+          />
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+
+      <View style={styles.InfoContainer}>
+        {editingMode ? (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Usuário"
+              value={profile.username}
+              onChangeText={(text) => setProfile({ ...profile, username: text })}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Nome"
+              value={profile.name}
+              onChangeText={(text) => setProfile({ ...profile, name: text })}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Descrição"
+              value={profile.description}
+              onChangeText={(text) => setProfile({ ...profile, description: text })}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Nova Senha"
+              secureTextEntry
+              value={senha}
+              onChangeText={setSenha}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirmar Senha"
+              secureTextEntry
+              value={confirmPass}
+              onChangeText={setConfirmPass}
+            />
+          </>
+        ) : (
+          <>
+            <Text style={styles.info}>{profile.username}</Text>
+            <Text style={styles.info}>{profile.email}</Text>
+            <Text style={styles.info}>{profile.name}</Text>
+            <Text style={styles.info}>{profile.description}</Text>
+          </>
+        )}
+      </View>
+
+      <TouchableOpacity
+        style={styles.mainButton}
+        onPress={() => (editingMode ? updateProfile() : setEditingMode(true))}
+      >
+        <Text style={styles.pressText}>
+          {editingMode ? "Salvar Alterações" : "Editar Perfil"}
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,  
-    backgroundColor: '#141414',
-  },
   container: {
-    alignItems: 'center', 
-    paddingHorizontal: 20,
+    flex: 1,
+    backgroundColor: "#141414",
+    padding: 20,
+    alignItems: "center",
   },
   sectionButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 20,
-  },    
-  button: {
+  },
+  iconButton: {
     height: 50,
     width: 50,
   },
@@ -105,22 +165,44 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
-  foto: {
-    height: 250,
-    width: 250,
-    borderRadius: 125,
-    marginBottom: '2%',
-  }, 
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
+  ImageContainer: {
+    marginTop: 50,
     marginBottom: 30,
-    color: '#fff',
-    textAlign: 'center',
-  }, 
-  texto: {
-    color: '#fff'
   },
-});
-
-export default PerfilScreen;
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+  },
+  InfoContainer: {
+    alignItems: "center",
+    marginBottom: 30,
+  },
+  info: {
+    color: "#FFF",
+    fontSize: 28,
+    marginVertical: 3,
+  },
+  input: {
+    color: "#FFF",
+    fontSize: 18,
+    backgroundColor: "#333",
+    padding: 10,
+    marginVertical: 3,
+    width: "100%",
+    borderRadius: 8,
+  },
+  mainButton: {  
+    width: "90%",
+    height: 40,
+    backgroundColor: "#236bcb",
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  pressText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+})
