@@ -1,34 +1,47 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
-import axios from 'axios';
-import { router } from 'expo-router';
+import React, { useState, useEffect, useContext } from 'react'
+import { View, Text, StyleSheet, TextInput, Image, Pressable, Button } from 'react-native'
+import { Link } from 'expo-router'
 import { AppContext } from '../../scripts/AppContext';
-import { jwtDecode } from 'jwt-decode'
+import { router } from 'expo-router'
 
 
-const LoginScreen = () => {
-  const { setToken, setUser } = useContext(AppContext);
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+export default login = () => {
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+    const [mensagem, setMensagem] = useState('')
+    const { userInfo, setUserInfo } = useContext(AppContext)
 
-  const EntrarUsuário = async () => {
-    if (!email || !senha) return;
 
-    try {
-      const res = await axios.post(
-        'http://localhost:8000/login',
-        { "email": email, "senha": senha }
-      );
-      setToken(res.data.token);
-      const user = jwtDecode(res.data.token);
-      setUser(user);
-      router.push("./Home");
-    }
-    catch (e) {
-      Alert.alert("Um erro ocorreu, tente novamente!");
-    }
-  }
+
+    const EntrarUsuario = async () => {
+        if (!email || !senha) {
+            setMensagem('Todos os campos devem ser preenchidos')
+            return;
+        }
+        try {
+            const response = await fetch('http://localhost:8000/autenticacao/login', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email, senha: senha })
+            });
+            data = await response.json()
+            if (response.status === 200) {
+                setMensagem('Signup successfully!');
+                setUserInfo(data.userInfo)
+                {userInfo.status == 'active'? router.push('/Home'): router.push('/Perfil')}
+            } else if (response.status === 409) {
+                setMensagem('Email already exists');
+            } else {
+                setMensagem('An error occurred, try again');
+            }
+        } catch (error) {
+            setMensagem('Error during signup. Please try again.');
+        }
+    };
+
 
   return (
     <View style={styles.container}>
@@ -43,6 +56,7 @@ const LoginScreen = () => {
         keyboardType="email-address"
         autoCapitalize="none"
         placeholderTextColor="#888"
+        inputMode='email'
       />
 
       <TextInput
@@ -55,7 +69,7 @@ const LoginScreen = () => {
       />
 
       <View style={styles.buttonContainer}>
-        <Button title="Login" color="#236bcb" onPress={EntrarUsuário}/>
+        <Button title="Login" color="#236bcb" onPress={EntrarUsuario}/>
       </View>
 
       <Link style={styles.buttonLink} href='/Registro'>CADASTRAR-SE</Link>
@@ -128,4 +142,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
