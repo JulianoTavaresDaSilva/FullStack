@@ -6,41 +6,43 @@ import { router } from 'expo-router'
 
 
 export default login = () => {
-    const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
-    const [mensagem, setMensagem] = useState('')
-    const { userInfo, setUserInfo } = useContext(AppContext)
+  const [email, setEmail] = useState('')
+  const [senha, setSenha] = useState('')
+  const [mensagem, setMensagem] = useState('')
+  const { user, setUser } = useContext(AppContext)
 
 
 
-    const EntrarUsuario = async () => {
-        if (!email || !senha) {
-            setMensagem('Todos os campos devem ser preenchidos')
-            return;
-        }
-        try {
-            const response = await fetch('http://localhost:8000/autenticacao/login', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: email, senha: senha })
-            });
-            data = await response.json()
-            if (response.status === 200) {
-                setMensagem('Signup successfully!');
-                setUserInfo(data.userInfo)
-                {userInfo.status == 'active'? router.push('/Home'): router.push('/Perfil')}
-            } else if (response.status === 409) {
-                setMensagem('Email already exists');
-            } else {
-                setMensagem('An error occurred, try again');
-            }
-        } catch (error) {
-            setMensagem('Error during signup. Please try again.');
-        }
-    };
+  const EntrarUsuario = async () => {
+    if (!email || !senha) {
+      setMensagem('Todos os campos devem ser preenchidos')
+      return;
+    }
+    try {
+      const response = await fetch('http://localhost:8000/autenticacao/login', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, senha: senha })
+      });
+      data = await response.json()
+      if (response.status == 200) {
+        console.log(data.userInfo)
+        setMensagem('Signup successfully!');
+        setUser(data.userInfo)
+        router.push('/Home')
+        return
+      } else if (response.status === 409) {
+        setMensagem('Email already exists');
+      } else {
+        setMensagem('An error occurred, try again');
+      }
+    } catch (error) {
+      setMensagem('Error during signup. Please try again.');
+    }
+  };
 
 
   return (
@@ -48,31 +50,31 @@ export default login = () => {
       <Text style={styles.title}>BEM-VINDO</Text>
 
       <View style={styles.section}>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        placeholderTextColor="#888"
-        inputMode='email'
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          placeholderTextColor="#888"
+          inputMode='email'
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        value={senha}
-        onChangeText={setSenha}
-        secureTextEntry
-        placeholderTextColor="#888"
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Senha"
+          value={senha}
+          onChangeText={setSenha}
+          secureTextEntry
+          placeholderTextColor="#888"
+        />
 
-      <View style={styles.buttonContainer}>
-        <Button title="Login" color="#236bcb" onPress={EntrarUsuario}/>
-      </View>
+        <View style={styles.buttonContainer}>
+          <Button title="Login" color="#236bcb" onPress={EntrarUsuario} />
+        </View>
 
-      <Link style={styles.buttonLink} href='/Registro'>CADASTRAR-SE</Link>
+        <Link style={styles.buttonLink} href='/Registro'>CADASTRAR-SE</Link>
       </View>
     </View>
   );
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
   },
-  section:{
+  section: {
     backgroundColor: 'black',
     borderRadius: 10,
     width: 350,
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 30,
-    color: '#fff', 
+    color: '#fff',
     textAlign: 'center',
   },
   input: {

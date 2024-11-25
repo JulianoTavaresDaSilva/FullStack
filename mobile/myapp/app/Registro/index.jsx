@@ -15,13 +15,13 @@ const registrarUsuario = async function () {
       console.log('Todos os campos devem ser preenchidos')
       return
   }
-  const resposta = await fetch('http://localhost:8000/registro',{
+  const resposta = await fetch('http://localhost:8000/autenticacao/registro',{
       method: 'POST',
       headers: {
       Accept: 'application/json',
       'Content-type': 'application/json',
   },
-      body: JSON.stringify({ name: nome, email: email, senha: senha, sobrenome: sobrenome, dataNascimento: dataNascimento })
+      body: JSON.stringify({ nome: nome, email: email, senha: senha, sobrenome: sobrenome, dataNascimento: dataNascimento })
   })
     
 if (!resposta) {
