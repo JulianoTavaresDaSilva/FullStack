@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 
 
 const RegisterScreen = () => {
@@ -78,6 +77,7 @@ if (!resposta) {
 
       <View style={styles.buttonContainer}>
         <Button title="Registrar" color="#236bcb" onPress={registrarUsuario} />
+        
       </View>
       </View>
     </View>

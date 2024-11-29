@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity, Alert, TextInput } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-//link seta a home
+import { useNavigation } from "@react-navigation/native";
 
 export default function UserProfile() {
   const [profile, setProfile] = useState({});
   const [editingMode, setEditingMode] = useState(false);
   const [senha, setSenha] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+
+  const navigation = useNavigation();
 
   const updateProfile = async () => {
     if (senha && senha !== confirmPass) {
@@ -69,6 +71,7 @@ export default function UserProfile() {
           <TouchableOpacity style={styles.iconButton}> 
             <Image
               source={require('../../assets/seta.png')}
+              onPress={() => navigation.navigate("/Home")}
               style={styles.icon}
             />
           </TouchableOpacity>

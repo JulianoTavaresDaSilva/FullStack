@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { View, Text, StyleSheet, TextInput, Image, Pressable, Button } from 'react-native'
+import React, { useState, useContext } from 'react'
+import { View, Text, StyleSheet, TextInput, Button } from 'react-native'
 import { Link } from 'expo-router'
 import { AppContext } from '../../scripts/AppContext';
 import { router } from 'expo-router'
 
 
-export default login = () => {
+export default LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [mensagem, setMensagem] = useState('')
@@ -15,7 +15,7 @@ export default login = () => {
 
   const EntrarUsuario = async () => {
     if (!email || !senha) {
-      setMensagem('Todos os campos devem ser preenchidos')
+      setMensagem('Todos os campos devem ser preenchidos.')
       return;
     }
     try {
@@ -30,17 +30,17 @@ export default login = () => {
       data = await response.json()
       if (response.status == 200) {
         console.log(data.userInfo)
-        setMensagem('Signup successfully!');
+        setMensagem('Login efetuado com sucesso!');
         setUser(data.userInfo)
         router.push('/Home')
         return
       } else if (response.status === 409) {
-        setMensagem('Email already exists');
+        setMensagem('Email já existe.');
       } else {
-        setMensagem('An error occurred, try again');
+        setMensagem('Ocorreu um erro, tente novamente.');
       }
     } catch (error) {
-      setMensagem('Error during signup. Please try again.');
+      setMensagem('Erro durante o login. Por favor, tente novamente.');
     }
   };
 
