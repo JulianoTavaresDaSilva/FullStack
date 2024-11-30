@@ -67,15 +67,6 @@ export default function UserProfile() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.sectionButton}>
-          <TouchableOpacity style={styles.iconButton}> 
-            <Image
-              source={require('../../assets/seta.png')}
-              onPress={() => navigation.navigate("/Home")}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-        </View>
       <View style={styles.ImageContainer}>
         <TouchableOpacity onPress={selectImage}>
           <Image

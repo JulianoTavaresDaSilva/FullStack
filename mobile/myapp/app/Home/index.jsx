@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, Image, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Link } from 'expo-router'
 
 const MusicAppScreen = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity>
-          <Image source={{uri: 'https://cdn-icons-png.flaticon.com/512/3106/3106807.png'}} style={styles.userPhoto} />
-        </TouchableOpacity>
+      <Link style={styles.buttonLink1} href='/Perfil'>👤</Link>
+
         <TextInput
           style={styles.searchBar}
           placeholder="Artistas, faixas, podcasts..."
@@ -25,11 +25,13 @@ const MusicAppScreen = () => {
             <Image source={{uri: 'https://blog.sosom.com.br/wp-content/uploads/2023/02/Saiba-o-que-e-trap-O-genero-musical-do-momento.png'}} style={styles.image} />
             <Text style={styles.cardTitle}>trap the fato</Text>
             <Text style={styles.cardDetails}>Playlist</Text>
+            <Link style={styles.buttonLink2} href='/Player'>⏯️</Link>
           </View>
           <View style={styles.card}>
             <Image source={{uri: 'https://cdn-images.dzcdn.net/images/artist/7be1be44b68b21641c2511e1034bc4c9/1900x1900-000000-80-0-0.jpg'}} style={styles.image} />
             <Text style={styles.cardTitle}>2Pac</Text>
             <Text style={styles.cardDetails}>Artista</Text>
+            <Link style={styles.buttonLink2} href='/Player'>⏯️</Link>
           </View>
         </ScrollView>
       </View>
@@ -133,6 +135,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  buttonLink1: {
+     filter: "invert(1)",
+     fontSize: 30,
+  },
+  buttonLink2: {
+    fontSize: 30,
   },
 });
 

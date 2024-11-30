@@ -4,7 +4,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 const MusicPlayerScreen = () => {
   return (
     <View style={styles.container}>
-      {/* Área de Informações da Música */}
       <View style={styles.playerInfo}>
         <Image 
           source={{uri: 'https://www.2pac.com/files/2022/11/artwork-440x440-16.jpg'}} 
@@ -108,7 +107,7 @@ const styles = StyleSheet.create({
   progressFill: {
     height: '100%',
     backgroundColor: '#236bcb',
-    width: '50%',  // Progresso da música (ajuste conforme necessário)
+    width: '50%', 
   },
 
   volumeControl: {
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
   volumeFill: {
     height: '100%',
     backgroundColor: '#236bcb',
-    width: '70%',  // Volume da música (ajuste conforme necessário)
+    width: '70%', 
   },
 });
 
